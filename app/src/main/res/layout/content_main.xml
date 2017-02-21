@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentRight="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="hisamoto.com.br.tcc.MainActivity"
+    tools:showIn="@layout/activity_main">
+
+    <LinearLayout
+        android:id="@+id/LinearLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+
+        <TextView
+            android:id="@+id/labelx"
+            android:layout_height="20dp"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="0dip"
+            android:layout_weight="0.16"
+            android:textAlignment="center"
+            android:text="X"
+            android:background="@android:color/holo_blue_bright"
+            android:textColor="@android:color/black"/>
+
+        <TextView
+            android:id="@+id/valorx"
+            android:layout_height="20dp"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="0dip"
+            android:layout_weight="1"
+            android:text="0"
+            android:textColor="@android:color/black"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/LinearLayout2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LinearLayout1"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/labely"
+            android:layout_height="20dp"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="0dip"
+            android:layout_weight="0.16"
+            android:textAlignment="center"
+            android:text="Y"
+            android:background="@android:color/holo_green_light"
+            android:textColor="@android:color/black"/>
+
+        <TextView
+            android:id="@+id/valory"
+            android:layout_height="20dp"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="0dip"
+            android:layout_weight="1"
+            android:text="0"
+            android:textColor="@android:color/black"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/LinearLayout3"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LinearLayout2"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/labelz"
+            android:layout_height="20dp"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="0dip"
+            android:layout_weight="0.16"
+            android:text="Z"
+            android:textAlignment="center"
+            android:background="@android:color/holo_purple"
+            android:textColor="@android:color/black"/>
+
+        <TextView
+            android:id="@+id/valorz"
+            android:layout_height="20dp"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="0dip"
+            android:layout_weight="1"
+            android:text="0"
+            android:textColor="@android:color/black"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/LinearLayout5"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LinearLayout3"
+        android:orientation="horizontal" >
+        <com.jjoe64.graphview.GraphView
+            android:layout_width="match_parent"
+            android:layout_height="200dip"
+            android:id="@+id/graph" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/LinearLayout4"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LinearLayout5"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/deslocamento"
+            android:layout_height="20dp"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="0dip"
+            android:layout_weight="1"
+            android:text=""
+            android:textColor="@android:color/black"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/LinearLayout6"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LinearLayout4"
+        android:orientation="horizontal" >
+
+        <com.jjoe64.graphview.GraphView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+
+            android:id="@+id/graphFFT"
+            android:layout_below="@+id/LinearLayout4"
+            android:layout_alignEnd="@+id/LinearLayout4" />
+    </LinearLayout>
+
+</RelativeLayout>
