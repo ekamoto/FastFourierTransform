@@ -59,7 +59,7 @@ public class MainHisamoto extends AppCompatActivity implements SensorEventListen
     private int n = 512;
     private ComplexFFT complexFFT;
     private double qtd_pontos_segundo_teste = 2.0;
-    private double qtd_pontos_segundo_amostra = 50.0;
+    private double qtd_pontos_segundo_amostra = 5.0;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -95,7 +95,8 @@ public class MainHisamoto extends AppCompatActivity implements SensorEventListen
 
         startTime = 1;
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
+        //mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_UI);
+        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
 
         mAcelerometro = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -160,7 +161,7 @@ public class MainHisamoto extends AppCompatActivity implements SensorEventListen
 
                     vector_x[contador] = timestamp;
                     vector_y[contador] = z;
-
+                    Log.i("Plotounomapa","Get "+contador+" - " + z);
                     contador++;
 
                     /*********************************Se Capturou a quantidade certa de pontos*****************************/
@@ -204,6 +205,8 @@ public class MainHisamoto extends AppCompatActivity implements SensorEventListen
                         graphFFT.setTitle("FFT");
 
                         gravarPontos = false;
+
+                        Log.i("Plotounomapa","Plotouuuuuuuuuuuuuuuuuuuuu");
                     }
                 }
             }
