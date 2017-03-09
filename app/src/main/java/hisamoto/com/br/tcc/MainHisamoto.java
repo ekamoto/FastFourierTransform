@@ -59,7 +59,8 @@ public class MainHisamoto extends AppCompatActivity implements SensorEventListen
     private int n = 512;
     private ComplexFFT complexFFT;
     private double qtd_pontos_segundo_teste = 2.0;
-    private double qtd_pontos_segundo_amostra = 5.0;
+    private double qtd_pontos_segundo_amostra = 100;
+    private int contador_pontos = 0;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -96,7 +97,19 @@ public class MainHisamoto extends AppCompatActivity implements SensorEventListen
         startTime = 1;
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         //mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_UI);
-        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+        //case SENSOR_DELAY_FASTEST:
+        //delay = 0;
+
+        //case SENSOR_DELAY_GAME:
+        //delay = 20000;
+
+        //case SENSOR_DELAY_UI:
+        //delay = 66667;
+
+        //case SENSOR_DELAY_NORMAL:
+        //delay = 200000;
+
+        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_FASTEST);
 
         mAcelerometro = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -104,20 +117,31 @@ public class MainHisamoto extends AppCompatActivity implements SensorEventListen
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Gravando pontos...", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
 
-                gravarPontos = true;
-                contador = 0;
-                vector_x = new double[1000];
-                vector_y = new double[1000];
+
+
+                if(!gravarPontos) {
+
+                    Snackbar.make(view, "Gravando Pontos...", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    contador_pontos = 0;
+
+                    contador = 0;
+                    vector_x = new double[10000];
+                    vector_y = new double[10000];
+                    gravarPontos = true;
+                } else {
+                    Snackbar.make(view, "Plotando Pontos...", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    gravarPontos = false;
+                }
             }
         });
 
         // Executando Teste
         TestFFT();
         /******************************************* Limpando vetores *************************************/
-        vector_x = new double[1000];
+        vector_x = new double[10000];
         Complex[] x = new Complex[n];
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -145,6 +169,25 @@ public class MainHisamoto extends AppCompatActivity implements SensorEventListen
         updateGraph(startTime++, x, y, z);
     }
 
+    /*Verifica se número é potencia de 2*/
+    private boolean ePotenciaDeDois(int numero) {
+
+        int i =0;
+        int numero_multi = 1;
+        for(;i<20;i++) {
+
+            if(numero_multi == numero){
+
+                return true;
+            }
+
+            numero_multi *= 2;
+            Log.i("HisamotoGravandoPontos", " Multiplos - " + numero_multi);
+        }
+
+        return false;
+    }
+
     void updateGraph(final long timestamp, final float x, final float y, final float z) {
 
         runOnUiThread(new Runnable() {
@@ -154,60 +197,67 @@ public class MainHisamoto extends AppCompatActivity implements SensorEventListen
                 //seriesY.appendData(new DataPoint(timestamp, y), true, 1000);
                 seriesZ.appendData(new DataPoint(timestamp, z), true, 1000);
 
-                if (gravarPontos && contador < n) {
+                if (gravarPontos ||(contador_pontos!=0 && !ePotenciaDeDois(contador_pontos))) {
 
-                    Log.i("TestePlot", " Gravando Pontos - " + contador);
+                    // Conta quantidade de pontos que estão sendo coletados
+                    contador_pontos++;
+
+                    Log.i("HisamotoGravandoPontos", " Gravando Pontos - " + contador_pontos);
 
 
                     vector_x[contador] = timestamp;
                     vector_y[contador] = z;
-                    Log.i("Plotounomapa","Get "+contador+" - " + z);
+                    Log.i("HisamotoGravandoPontos","Get "+contador_pontos+" - " + z);
                     contador++;
 
-                    /*********************************Se Capturou a quantidade certa de pontos*****************************/
-                    if (contador == n) {
+                } else if(contador_pontos > 0) {
 
-                        //fft.fft(vector_x, vector_y);
+                    Log.i("HisamotoGravandoPontos", " Plotando pontos: "+contador_pontos);
 
-                        int l = 0;
-                        Complex[] vecy = new Complex[n];
+                    int l = 0;
+                    Complex[] vecy = new Complex[contador_pontos];
 
-                        for (l = 0; l < n; l++) {
+                    for (; l < contador_pontos; l++) {
 
-                            vecy[l] = new Complex((double) vector_y[l], 0);
+                        vecy[l] = new Complex((double) vector_y[l], 0);
 
-                        }
-
-                        complexFFT = new ComplexFFT();
-
-                        Complex[] y_processado = complexFFT.fft(vecy);
-
-                        graphFFT = (GraphView) findViewById(R.id.graphFFT);
-
-                        DataPoint[] datapoints = new DataPoint[n];
-
-                        for (int i = 0; i < n; i++) {
-                            double teste_x = i * qtd_pontos_segundo_amostra / (n / 2);
-                            double teste_y = y_processado[i].abs();
-                            Log.i("TestePlot", teste_x + " | " + teste_y);
-
-                            datapoints[i] = new DataPoint(teste_x, teste_y);
-                        }
-
-                        graphFFT.removeAllSeries();
-                        serieFFT = new LineGraphSeries<DataPoint>(datapoints);
-
-                        serieFFT.setColor(Color.BLACK);
-                        serieFFT.setAnimated(true);
-                        serieFFT.setThickness(4);
-
-                        graphFFT.addSeries(serieFFT);
-                        graphFFT.setTitle("FFT");
-
-                        gravarPontos = false;
-
-                        Log.i("Plotounomapa","Plotouuuuuuuuuuuuuuuuuuuuu");
                     }
+
+                    complexFFT = new ComplexFFT();
+
+                    Complex[] y_processado = complexFFT.fft(vecy);
+
+                    graphFFT = (GraphView) findViewById(R.id.graphFFT);
+
+                    DataPoint[] datapoints = new DataPoint[contador_pontos];
+
+                    for (int i = 0; i < contador_pontos; i++) {
+
+                        double teste_x = i * qtd_pontos_segundo_amostra / (contador_pontos / 2);
+                        double teste_y = y_processado[i].abs();
+                        Log.i("TestePlot", teste_x + " | " + teste_y);
+
+                        datapoints[i] = new DataPoint(teste_x, teste_y);
+                    }
+
+                    graphFFT.removeAllSeries();
+                    serieFFT = new LineGraphSeries<DataPoint>(datapoints);
+
+                    serieFFT.setColor(Color.BLACK);
+                    serieFFT.setAnimated(true);
+                    serieFFT.setThickness(4);
+
+                    graphFFT.addSeries(serieFFT);
+                    graphFFT.setTitle("FFT");
+
+                    gravarPontos = false;
+
+                    Log.i("Plotounomapa", "Plotouuuuuuuuuuuuuuuuuuuuu");
+
+                    contador_pontos = 0;
+                    vector_x = new double[10000];
+                    vector_y = new double[10000];
+
                 }
             }
         });
@@ -258,7 +308,7 @@ public class MainHisamoto extends AppCompatActivity implements SensorEventListen
             Scanner dataScanner = null;
             int index = 0;
 
-            vector_x = new double[1000];
+            vector_x = new double[10000];
 
             int cont = 0;
             while (scanner.hasNextLine()) {
@@ -292,7 +342,6 @@ public class MainHisamoto extends AppCompatActivity implements SensorEventListen
 
             Viewport vpFFT = graphFFT.getViewport();
             vpFFT.setScalable(false);
-            vpFFT.setScalable(true);
 
             /************************************** Cria os datapoints para o gráfico ************************************/
             DataPoint[] datapoints = new DataPoint[512];
@@ -310,7 +359,7 @@ public class MainHisamoto extends AppCompatActivity implements SensorEventListen
 
             for (int i = 0; i < n; i++) {
 
-                manageFile.WriteFile((i * 2 / (n / 2)) + " - " + y_hisamoto[i].abs());
+                manageFile.WriteFile((i * qtd_pontos_segundo_teste / (n / 2)) + " - " + y_hisamoto[i].abs());
             }
 
             /************************************* Plotando dados processados no gráfico*********************************/
