@@ -1,5 +1,6 @@
 package hisamoto.com.br.tcc;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -96,7 +97,7 @@ public class MainHisamoto extends AppCompatActivity implements SensorEventListen
 
         startTime = 1;
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        //mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_UI);
+
         //case SENSOR_DELAY_FASTEST:
         //delay = 0;
 
@@ -214,7 +215,7 @@ public class MainHisamoto extends AppCompatActivity implements SensorEventListen
 
                     Log.i("HisamotoGravandoPontos", " Plotando pontos: "+contador_pontos);
 
-                    int l = 0;
+                    int l = 1; // Ignorar primeiro valor, testar essa alteração
                     Complex[] vecy = new Complex[contador_pontos];
 
                     for (; l < contador_pontos; l++) {
@@ -286,8 +287,19 @@ public class MainHisamoto extends AppCompatActivity implements SensorEventListen
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         int id = item.getItemId();
+
+        Log.i("Menu", "Menu");
+
         if (id == R.id.action_settings) {
+
+            Log.i("Menu", "Configuraçoes");
+
+            Intent i = new Intent();
+            i.setClass(getApplicationContext(), SettingsActivity.class);
+            startActivity(i);
+
             return true;
         }
         return super.onOptionsItemSelected(item);

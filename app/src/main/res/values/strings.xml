@@ -1,4 +1,29 @@
 <resources>
     <string name="app_name">Tcc</string>
     <string name="action_settings">Configurações</string>
+
+    <string name="pref_title_save_file">Salvar coordenadas</string>
+    <string name="pref_description_save_file">Salvar em arquivo na pasta Hisamoto</string>
+    <string name="pref_title_time_loop">Tempo Busca em segundos</string>
+
+    <string name="largura">Largura da seção</string>
+    <string name="largura_default">500</string>
+
+    <string name="altura">Altura da seção</string>
+    <string name="altura_default">5</string>
+
+    <string name="pref_default_title_time_loop">5</string>
+    <string name="cadastro_rotas">Cadastro de Rotas</string>
+    <string name="lista_rotas">Lista de Rotas</string>
+    <string name="title_activity_cadastro_rota">CadastroRotaActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_lista_pesquisa">ListaPesquisa</string>
+    <string name="home">Eita</string>
+    <string name="title_activity_show_rota">ShowRotaActivity</string>
+    <string name="rota">Rota</string>
+    <string name="origem">Origem</string>
+    <string name="destino">Destino</string>
+    <string name="descricao">Descrição</string>
+    <string name="status_rota">[Status da Rota]</string>
 </resources>
