@@ -1,6 +1,7 @@
 package hisamoto.com.br.tcc;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -8,6 +9,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -36,6 +38,7 @@ public class MainHisamoto extends AppCompatActivity implements SensorEventListen
     private TextView valorX;
     private TextView valorY;
     private TextView valorz;
+    private TextView valor_moe;
 
     private float x;
     private float y;
@@ -62,6 +65,13 @@ public class MainHisamoto extends AppCompatActivity implements SensorEventListen
     private double qtd_pontos_segundo_teste = 2.0;
     private double qtd_pontos_segundo_amostra = 100;
     private int contador_pontos = 0;
+    private double max_point_y = -1.0;
+    private double largura = 0;
+    private double altura = 0;
+    private double massa_viga = 0.0;
+    private double vao_peca = 0.0;
+
+    private SharedPreferences sharedPreferences;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -80,6 +90,7 @@ public class MainHisamoto extends AppCompatActivity implements SensorEventListen
         valorX = (TextView) findViewById(R.id.valorx);
         valorY = (TextView) findViewById(R.id.valory);
         valorz = (TextView) findViewById(R.id.valorz);
+        valor_moe = (TextView) findViewById(R.id.valor_moe);
 
         graph = (GraphView) findViewById(R.id.graph);
         Viewport vp = graph.getViewport();
@@ -119,10 +130,9 @@ public class MainHisamoto extends AppCompatActivity implements SensorEventListen
             @Override
             public void onClick(View view) {
 
-
-
                 if(!gravarPontos) {
 
+                    max_point_y = -1.0;
                     Snackbar.make(view, "Gravando Pontos...", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                     contador_pontos = 0;
@@ -242,9 +252,31 @@ public class MainHisamoto extends AppCompatActivity implements SensorEventListen
 
                             teste_y = 0;
                         }
+                        // Pegando pico máximo
+                        if(teste_y > max_point_y) {
+
+                            max_point_y = teste_y;
+                        }
 
                         datapoints[i] = new DataPoint(teste_x, teste_y);
                     }
+
+                    sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+                    altura = Float.valueOf(sharedPreferences.getString("largura_", ""));
+                    largura = Float.valueOf(sharedPreferences.getString("altura_", ""));
+                    massa_viga = Float.valueOf(sharedPreferences.getString("massa_viga_", ""));
+                    vao_peca = Float.valueOf(sharedPreferences.getString("vao_peca_", ""));
+
+                    Log.i("PicoMaximo", "altura: " + altura);
+                    Log.i("PicoMaximo", "largura: " + largura);
+                    Log.i("PicoMaximo", "massa_vida: " + massa_viga);
+                    Log.i("PicoMaximo", "vao_peca: " + vao_peca);
+
+                    //I= b.h³/12
+                    double valormoe = ((max_point_y*max_point_y)*massa_viga*(vao_peca*vao_peca*vao_peca))/(2.46*(largura*(altura*altura*altura)/12.0)*9.8);
+
+                    valor_moe.setText("" + valormoe);
 
                     graphFFT.removeAllSeries();
                     serieFFT = new LineGraphSeries<DataPoint>(datapoints);

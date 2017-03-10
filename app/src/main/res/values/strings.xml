@@ -6,10 +6,16 @@
     <string name="pref_description_save_file">Salvar em arquivo na pasta Hisamoto</string>
     <string name="pref_title_time_loop">Tempo Busca em segundos</string>
 
-    <string name="largura">Largura da seção</string>
+    <string name="largura">Largura da seção(cm)</string>
     <string name="largura_default">500</string>
 
-    <string name="altura">Altura da seção</string>
+    <string name="altura">Altura da seção(cm)</string>
+    <string name="massa_viga">Massa da Viga(Kg)</string>
+    <string name="massa_viga_default">10</string>
+
+    <string name="vao_peca">Vão da Peça(m)</string>
+    <string name="vao_peca_default">10</string>
+
     <string name="altura_default">5</string>
 
     <string name="pref_default_title_time_loop">5</string>

@@ -84,6 +84,8 @@ public class SettingsActivity extends PreferenceActivity {
         // to reflect the new value, per the Android Design guidelines.
         bindPreferenceSummaryToValue(findPreference("largura_"));
         bindPreferenceSummaryToValue(findPreference("altura_"));
+        bindPreferenceSummaryToValue(findPreference("massa_viga_"));
+        bindPreferenceSummaryToValue(findPreference("vao_peca_"));
         //bindPreferenceSummaryToValue(findPreference("example_list"));
 //        bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"));
 //        bindPreferenceSummaryToValue(findPreference("sync_frequency"));
