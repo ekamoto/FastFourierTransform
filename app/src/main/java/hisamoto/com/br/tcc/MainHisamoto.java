@@ -215,7 +215,7 @@ public class MainHisamoto extends AppCompatActivity implements SensorEventListen
 
                     Log.i("HisamotoGravandoPontos", " Plotando pontos: "+contador_pontos);
 
-                    int l = 1; // Ignorar primeiro valor, testar essa alteração
+                    int l = 0; // Ignorar primeiro valor, testar essa alteração
                     Complex[] vecy = new Complex[contador_pontos];
 
                     for (; l < contador_pontos; l++) {
@@ -237,6 +237,11 @@ public class MainHisamoto extends AppCompatActivity implements SensorEventListen
                         double teste_x = i * qtd_pontos_segundo_amostra / (contador_pontos / 2);
                         double teste_y = y_processado[i].abs();
                         Log.i("TestePlot", teste_x + " | " + teste_y);
+
+                        if(i == 0) {
+
+                            teste_y = 0;
+                        }
 
                         datapoints[i] = new DataPoint(teste_x, teste_y);
                     }
@@ -293,8 +298,7 @@ public class MainHisamoto extends AppCompatActivity implements SensorEventListen
         Log.i("Menu", "Menu");
 
         if (id == R.id.action_settings) {
-
-            Log.i("Menu", "Configuraçoes");
+            Log.i("Menu", "Configuracoes");
 
             Intent i = new Intent();
             i.setClass(getApplicationContext(), SettingsActivity.class);
