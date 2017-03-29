@@ -71,7 +71,7 @@ public class MainHisamoto extends AppCompatActivity implements SensorEventListen
     private double massa_viga = 0.0;
     private double vao_peca = 0.0;
 
-    private SharedPreferences sharedPreferences;
+    private static SharedPreferences sharedPreferences;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -85,6 +85,15 @@ public class MainHisamoto extends AppCompatActivity implements SensorEventListen
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putString("largura_", "300");
+        editor.putString("altura_", "3");
+        editor.putString("massa_viga_", "5");
+        editor.putString("vao_peca_", "2");
+        editor.commit();
 
         /************************************* Iniciando captura de variação X, Y, Z *********************************/
         valorX = (TextView) findViewById(R.id.valorx);
@@ -142,6 +151,8 @@ public class MainHisamoto extends AppCompatActivity implements SensorEventListen
                     vector_y = new double[10000];
                     gravarPontos = true;
                 } else {
+
+
                     Snackbar.make(view, "Plotando Pontos...", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                     gravarPontos = false;
@@ -261,16 +272,16 @@ public class MainHisamoto extends AppCompatActivity implements SensorEventListen
                         datapoints[i] = new DataPoint(teste_x, teste_y);
                     }
 
-                    sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
-                    altura = Float.valueOf(sharedPreferences.getString("largura_", ""));
-                    largura = Float.valueOf(sharedPreferences.getString("altura_", ""));
-                    massa_viga = Float.valueOf(sharedPreferences.getString("massa_viga_", ""));
-                    vao_peca = Float.valueOf(sharedPreferences.getString("vao_peca_", ""));
+
+                    altura = Float.valueOf(sharedPreferences.getString("largura_", "0"));
+                    largura = Float.valueOf(sharedPreferences.getString("altura_", "0"));
+                    massa_viga = Float.valueOf(sharedPreferences.getString("massa_viga_", "0"));
+                    vao_peca = Float.valueOf(sharedPreferences.getString("vao_peca_", "0"));
 
                     Log.i("PicoMaximo", "altura: " + altura);
                     Log.i("PicoMaximo", "largura: " + largura);
-                    Log.i("PicoMaximo", "massa_vida: " + massa_viga);
+                    Log.i("PicoMaximo", "massa_viga: " + massa_viga);
                     Log.i("PicoMaximo", "vao_peca: " + vao_peca);
 
                     //I= b.h³/12
@@ -304,12 +315,14 @@ public class MainHisamoto extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onResume() {
         super.onResume();
+
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mSensorManager.unregisterListener((SensorEventListener) this);
+
     }
 
     @Override

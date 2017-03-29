@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Tcc</string>
+    <string name="app_name">ME-Wood</string>
     <string name="action_settings">Configurações</string>
 
     <string name="pref_title_save_file">Salvar coordenadas</string>
