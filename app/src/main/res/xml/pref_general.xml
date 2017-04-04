@@ -15,6 +15,13 @@
 
     <!-- NOTE: EditTextPreference accepts EditText attributes. -->
     <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
+
+    <PreferenceCategory
+        android:title="@string/categoria_menu"
+        android:key="pref_key_storage_settings"
+
+
+        >
     <EditTextPreference
         android:key="largura_"
         android:title="@string/largura"
@@ -69,5 +76,5 @@
     <!--&lt;!&ndash; NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to-->
          <!--dismiss it. &ndash;&gt;-->
     <!--&lt;!&ndash; NOTE: ListPreference's summary should be set to its value by the activity code. &ndash;&gt;-->
-
+</PreferenceCategory>
 </PreferenceScreen>

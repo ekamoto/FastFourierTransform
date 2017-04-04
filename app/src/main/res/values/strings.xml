@@ -32,4 +32,5 @@
     <string name="destino">Destino</string>
     <string name="descricao">Descrição</string>
     <string name="status_rota">[Status da Rota]</string>
+    <string name="categoria_menu">PARÂMETROS DA PEÇA</string>
 </resources>
